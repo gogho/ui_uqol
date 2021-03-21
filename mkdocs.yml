@@ -2,12 +2,13 @@ site_name: Docs and guides
 
 # theme slate for dark mode
 theme: 
-    palette:
+  name: material
+  palette:
       scheme: slate
       primary: cyan
       accent: orange
-  logo: 'img/favicon.ico'
-  favicon: 'img/gogho.ico'
+  logo: img/favicon.ico
+  favicon: img/gogho.ico
   feature:
     tabs: false
       - navigation.instant
