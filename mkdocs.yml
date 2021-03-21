@@ -2,8 +2,7 @@ site_name: Docs and guides
 
 # theme slate for dark mode
 theme: 
-  name: mkdocs
-  palette:
+    palette:
       scheme: slate
       primary: cyan
       accent: orange
