@@ -1,3 +1,93 @@
-site_name: My Docs
-theme:
-  name: material
+site_name: Docs and guides
+
+# theme slate for dark mode
+theme: 
+  name: mkdocs
+  palette:
+      scheme: slate
+      primary: cyan
+      accent: orange
+  logo: 'img/favicon.ico'
+  favicon: 'img/gogho.ico'
+  feature:
+    tabs: false
+      - navigation.instant
+      - navigation.sections
+      - toc.integrate
+# specify the URL to the GitHub repo for this site - included as link top right
+repo_url: https://github.com/gogho/ui_uqol
+# [update as needed] specify the text for repo link - included as link top right
+repo_name: 'GitHub'
+# specify the relative path to markdown files in GitHub repo - typically does not need to be updated
+# [update as needed] provides an edit link for each markdown page in site to make contribution to content easier
+#edit_uri: tree/master/docs/
+# specify any links you want to include at right of footer
+# [update as needed] type is a fontawesome reference
+extra:
+  social:
+    - icon: fontawesome/brands/facebook-square
+      link: https://www.facebook.com/gogho
+    - icon: fontawesome/brands/facebook-messenger
+      link: http://m.me/gogho
+    - icon: fontawesome/brands/github
+      link: https://github.com/gogho
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:gogho1@gmail.com 
+
+copyright: Copyright &copy; 2021 Martin Gofus
+
+extra_javascript:
+    - https://unpkg.com/mermaid/dist/mermaid.min.js
+    - https://code.jquery.com/jquery-3.3.1.slim.min.js
+
+# extra css for wide scale
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - Ubuntu: ubuntu.md
+  - Raspberry PI: rpi.md
+#  - SMATS training:
+#    - HPOA: smats_training\HPOA.md
+#    - HPOM: smats_training\HPOM.md
+#    - Monitoring integrations: smats_training\Integration.md
+#    - Monitoring solutions: smats_training\Solutions.md
+#    - SMATS internal tools: smats_training\internal_tools.md
+  
+
+# lists plugins used
+# search enables LUNR search on site
+# git-revision-date allows include last edit date in pages https://github.com/zhaoterryy/mkdocs-git-revision-date-plugin
+# macros enables variables support https://github.com/fralau/mkdocs_macros_plugin
+plugins:
+  - search
+#  - git-revision-date
+#  - macros
+#  - awesome-pages:
+#      collapse_single_pages: true
+#  - git-committers:
+#      enterprise_hostname: github.dxc.com
+#      repository: monitoring/OM_switch_guide
+#      branch: master
+#      token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+# lists any extensions used in site
+# markdown_include.include enables embedding syntax references to support shared/leveraged content
+# base_path defines the folder location where shared/leveraged content is stored
+# toc enables the ability to link to specific markdown heading locations with pages
+# codehilite: linenums enables the line breaks and line # display in code blocks
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - footnotes
+  - attr_list
+  - toc:
+      permalink: true
+  - codehilite:
+      linenums: false
+#  - lightgallery
+#  - pymdownx.mark
+#  - pymdownx.magiclink
+  - footnotes  
+# defines variables that can be referenced in pages, e.g., contact.name - enabled by macros plugin
