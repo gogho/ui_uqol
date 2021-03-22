@@ -20,7 +20,7 @@ repo_url: https://github.com/gogho/ui_uqol
 repo_name: 'GitHub'
 # specify the relative path to markdown files in GitHub repo - typically does not need to be updated
 # [update as needed] provides an edit link for each markdown page in site to make contribution to content easier
-#edit_uri: tree/master/docs/
+edit_uri: tree/main/docs/
 # specify any links you want to include at right of footer
 # [update as needed] type is a fontawesome reference
 extra:
@@ -47,6 +47,7 @@ extra_css:
 nav:
   - Home: index.md
   - Ubuntu: ubuntu.md
+  - Games on linux: gu.md
   - Raspberry PI: rpi.md
 #  - SMATS training:
 #    - HPOA: smats_training\HPOA.md
