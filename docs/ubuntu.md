@@ -1,244 +1,126 @@
+# Ubuntu and windows dualboot setup
 
-> bash history
+## Windows setup for dualboot
+
+### Time differences
+[https://ubuntuhandbook.org/index.php/2016/05/time-differences-ubuntu-1604-windows-10/](https://ubuntuhandbook.org/index.php/2016/05/time-differences-ubuntu-1604-windows-10/)
+
+I use local time in ubuntu.
+
 ```bash
-sudo apt install doublecmd-common 
-sudo apt install transmission
+timedatectl set-local-rtc 1 --adjust-system-clock
+#check settting
+timedatectl
+```
+### Disable fastboot
 
+While it was enabled, hard disk could be mounted read-only and motherboard aura was glowing when it was turned off from ubuntu.
+
+1. Go to Control Panel.
+2. Click Power Options.
+3. Choose "what the power buttons do."
+4. Click "Change settings that are currently unavailable."
+5. Find and uncheck "Turn on fast startup."
+6. Save changes.
+7. Shutdown and boot linux.
+
+[https://itsfoss.com/solve-ntfs-mount-problem-ubuntu-windows-8-dual-boot/](https://itsfoss.com/solve-ntfs-mount-problem-ubuntu-windows-8-dual-boot/)
+
+## Ubuntu essencial install
+
+Chrome  
+
+```bash
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo apt install ./google-chrome-stable_current_amd64.deb
 cat /etc/apt/sources.list.d/google-chrome.list
+```
+
+SMplayer
+
+```bash
 sudo add-apt-repository ppa:rvm/smplayer
 sudo apt-get update
 sudo apt-get install smplayer smtube smplayer-themes
+```
 
-cd smplayer/
-cp ~/.config/smplayer/smplayer.ini ~/.config/smplayer/smplayer.ini_backup
-cp smplayer.ini ~/.config/smplayer/
-diff ~/.config/smplayer/smplayer.ini ~/.config/smplayer/smplayer.ini_backup
+Other soft install
 
-cat transmission/settings.json
-cp transmission/settings.json ~/.config/transmission/
-
-sudo apt-get install gnome-tweaks gnome-tweak-tool 
-
+```bash
+sudo apt install doublecmd-common 
+sudo apt install transmission
+sudo apt install gnome-tweaks gnome-tweak-tool 
 sudo apt install snapd
-
 sudo apt install gparted
+sudo apt install net-tools
+sudo apt install mlocate
+#joplin
+wget -O - https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
+```
 
-pactl list short sources
-cat /etc/pulse/default.pa
-sudo vi /etc/pulse/default.pa
-pactl list short sinks
-pactl list short
-pactl list short sinks
-pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo
-sudo apt install note
-note
-wine notepad++
+Snap installations
 
+```bash
+sudo snap install deezer-unofficial-player
+sudo snap install docker
+# Visual Studio Code
+sudo snap install --classic code
+```
 
-sudo apt install libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libsqlite3-0:i386
-sudo add-apt-repository ppa:lutris-team/lutris
-sudo apt-get update
-sudo apt-get install lutris 
+## Ubuntu configuration
 
+Update grub startup screen to show what is executed
 
-sudo snap install deezer-unofficial-player 
-deezer-unofficial-player 
-
-
-sudo apt install tilda 
-
-sudo apt install putty
-
-# set
-timedatectl
-timedatectl set-local-rtc 1 --adjust-system-clock
-timedatectl
-
+```bash
 cat /etc/default/grub
+# disable quiet in GRUB_CMDLINE_LINUX_DEFAULT
+# GRUB_CMDLINE_LINUX_DEFAULT="splash"
 sudo vi /etc/default/grub
 sudo update-grub
+```
+
+### Startup script to set default audio output to built in audio
+
+From some reason ubuntu always switched default output to USB headset. It is changed after boot to built in audio output.
+
+1. Run: `pactl list short sinks`
+2. Note the device name you want to use as default  
+alsa_output.usb-Kingston_HyperX_Virtual_Surround_Sound_00000000-00.iec958-stereo	module-alsa-card.c	s16le 2ch 44100Hz	SUSPENDED  
+alsa_output.pci-0000_00_1f.3.analog-stereo	module-alsa-card.c	s16le 2ch 48000Hz	SUSPENDED  
+3. Try to run: `pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo`
+4. Open the application "Startup Applications" (Should be preinstalled on Ubuntu)
+5. Click on "Add", Give your startup item a name 
+6. Copy your command from above into the command field and save
+`pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo`
+
+Script can be found in `/home/gogho/.config/autostart/pactl.desktop
+
+## Utils
 
 rsync
-man rsync
-rsync -avrW -e ssh gogho@192.168.1.10:/media/gogho/DATA/* .
-rsync -avrW --progress -e ssh gogho@192.168.1.10:/media/gogho/DATA/* .
+
+```bash
 rsync -auvrWz --progress -e ssh gogho@192.168.1.10:/media/gogho/DATA/* .
-ssh gogho@192.168.1.10
+```
+
+## mkdocs material
+
+Download docker image
+
+```bash
+sudo docker pull squidfunk/mkdocs-material  
+sudo docker image ls  
+```
 
 
-cat /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
-ifconfig
-sudo apt install net-tools 
-ifconfig
-ping 192.168.1.10
-cat /etc/default/grub
-ifconfig
-sudo apt-get udpate
-sudo apt-get update
-sudo apt-get upgrade
-shutdown now
-sudo add-apt-repository ppa:graphics-drivers/ppa
-sudo dpkg --add-architecture i386 
-sudo apt update
-sudo apt list --upgradable
-sudo apt upgrade
-sudo apt update
-sudo apt-get upgrade
-reboot
-sudo apt-get update
-sudo apt-get upgrade
-ssh pi@192.168.1.72
-exit
-su rpi
-ssh pi@192.168.1.72
-cat /etc/hosts
-ifconfig
-sudo vi /etc/hosts
-ping rpi
-mount
-ll
-cd /media/gogho/Data/
-ll
-cd /media/gogho/Data/Storage/
-ll
-su rpi
-sudo -i
-id
-groopus
-grooups
-grooup
-group
-groups
-sudo usermod -a G gogho rpi
-sudo usermod -a -G gogho rpi
-mount
-cd ..
-ll
-sudo umount /media/gogho/Data 
-shutdown now
+New project from docker
 
-WINEPREFIX=~/.wine.hearthstone WINEARCH=win32 wine wineboot
-WINEPREFIX=~/.wine.hearthstone winetricks dotnet472
-WINEPREFIX=~/.wine.hearthstone winetricks corefonts
-WINEPREFIX=~/.wine.hearthstone winetricks nocrashdialog
-{ cat | sed 's/$/\r/' | iconv -f ascii -t UTF-16 > /tmp/hdt.reg; } <<EOF
-Windows Registry Editor Version 5.00
+```bash
+docker run --rm -it -v ${PWD}:/docs squidfunk/mkdocs-material new .
+```
 
-[HKEY_CURRENT_USER\Software\Wine\X11 Driver]
-"UseTakeFocus"="N"
+Run local preview
 
-[HKEY_CURRENT_USER\Software\Microsoft\Avalon.Graphics]
-"DisableHWAcceleration"=dword:00000001
-EOF
-
-WINEPREFIX=~/.wine.hearthstone regedit /tmp/hdt.reg
-WINEPREFIX=~/.wine.hearthstone wine ~/Downloads/HDT-Installer.exe
-WINEPREFIX=~/.wine.hearthstone winecfg
-sudo apt-get li
-sudo apt-get install wine-staging
-WINEPREFIX=~/.wine.hearthstone winecfg
-WINEPREFIX=~/.wine.hearthstone wine ~/Downloads/HDT-Installer.exe
-reboot
-WINEPREFIX=~/.wine.hearthstone winecfg
-WINEPREFIX=~/.wine.hearthstone wine ~/Downloads/HDT-Installer.exe
-sudo apt list --installed|grep -i wine
-wine --version
-whereis wine
-WINEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/wine ~/Downloads/HDT-Installer.exe
-ll ~/.wine.hearthstone/
-mv ~/.wine.hearthstone/ ~/wine.hearthstone.old
-WINEPREFIX=~/.wine.hearthstone WINEARCH=win32 /opt/wine-staging/bin/wine wineboot
-WINEPREFIX=~/.wine.hearthstone winetricks dotnet472
-WINEPREFIX=~/.wine.hearthstone winetricks corefonts
-WINEPREFIX=~/.wine.hearthstone winetricks nocrashdialog
-WINEPREFIX=~/.wine.hearthstone regedit /tmp/hdt.reg
-{ cat | sed 's/$/\r/' | iconv -f ascii -t UTF-16 > /tmp/hdt.reg; } <<EOF
-Windows Registry Editor Version 5.00
-
-[HKEY_CURRENT_USER\Software\Wine\X11 Driver]
-"UseTakeFocus"="N"
-
-[HKEY_CURRENT_USER\Software\Microsoft\Avalon.Graphics]
-"DisableHWAcceleration"=dword:00000001
-EOF
-
-WINEPREFIX=~/.wine.hearthstone regedit /tmp/hdt.reg
-WINEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/wine ~/Downloads/HDT-Installer.exe
-ls Downloads/|grep -i battle
-WINEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/wine ~/Downloads/Battle.net-Setup.exe 
-INEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/wine ~/Downloads/Battle.net-Setup.exe 
-cd ~/.wine.hearthstone/drive_c/Program\ Files/
-ll
-WINEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/wine ~/Downloads/HDT-Installer.exe
-ifconfig
-ps -ef|grep -i hear
-kill -9 33675
-ps -efH
-WINEPREFIX=~/.wine.hearthstone winecfg
-winetricks 
-wine --version
-WINEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/wine --version
-wine=/opt/wine-staging/bin/wine
-wine --version
-export wine=/opt/wine-staging/bin/winecfg 
-wine --version
-echo $PATH
-whereis wine
-ls -la /usr/bin/wine
-ls -la /etc/alternatives/
-WINEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/winecfg 
-shutdown now
-ls -altr
-du -sh *
-rm -rf wine.hearthstone.old/
-du -sh .wine
-du -sh .wine.hearthstone/
-ls -la
-ll .wine.hearthstone/drive_c/Program\ Files/Battle.net/
-ll Games/hearthstone/
-ll Games/hearthstone/drive_c/
-du -sh Games/hearthstone/drive_c/*
-git
-sudo apt install git
-/opt/wine-staging/winecfg
-/opt/wine-staging/bin/winecfg 
-WINEPREFIX=~/.wine.hearthstone /opt/wine-staging/bin/winecfg 
-winecfg
-sudo apt list --installed|grep libvulkan
-sudo apt list --installed|grep vulkan
-sudo apt install libvulkan1 libvulkan-dev vulkan-utils
-cd Downloads/
-tar xvf dxvk-1.8.1.tar.gz 
-locate visual
-sudo apt install mlocate
-locate visual
-cd ..
-ll
-mkdir github
-cd github/
-ll
-git config --global user.name "Gogho"
-git config --global user.email gogho1@gmail.com
-ls -al ~/.ssh
-ssh-keygen -t ed25519 -C gogho1@gmail.com
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-sudo apt-get install xclip
-xclip -selection clipboard < ~/.ssh/id_ed25519.pub
-man git
-git clone git@github.com:gogho/ui_uqol.git
-ll
-cd ui_uqol/
-ll
-pip
-docker
-sudo snap install docker
-df -h
-docker pull squidfunk/mkdocs-material
-sudo docker pull squidfunk/mkdocs-material
-docker image ls
-sudo docker image ls
-shutdown now
+```bash
+sudo docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
 ```
