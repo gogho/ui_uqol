@@ -65,6 +65,8 @@ sudo snap install deezer-unofficial-player
 sudo snap install docker
 # Visual Studio Code
 sudo snap install --classic code
+# source app, visual for git
+sudo snap install source-app
 ```
 
 ## Ubuntu configuration
